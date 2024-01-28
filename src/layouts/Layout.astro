@@ -1,0 +1,84 @@
+---
+import FooterBar from "../components/FooterBar.astro";
+import { ViewTransitions } from "astro:transitions";
+import  RocketLogo  from "../assets/RocketLogo.avif"
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/avif" href={RocketLogo.src} />
+    <meta name="generator" content={Astro.generator} />
+    <meta
+      name="description"
+      content="if you are interested in rockets, this is the right site for you. Here, you can explore and learn more about them"
+    />
+    <title>{title}</title>
+    <ViewTransitions/>
+  </head>
+  <body>
+    <div id="app" class="relative h-screen p-2 gap-2">
+      <main class="[grid-area:main]">
+        <slot />
+      </main>
+      <footer
+        class="[grid-area:footer] bg-gray-200/40 backdrop-blur-sm flex flex-col fixed bottom-0 left-0 w-full rounded-lg h-[100px]"
+      >
+        <FooterBar />
+      </footer>
+    </div>
+  </body>
+  <style>
+    #app {
+      display: grid;
+      grid-template-areas:
+        "main main main"
+        "footer footer footer";
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr auto;
+    }
+  </style>
+
+  <style is:global>
+    html {
+      font-family: "CircularStd", system-ui, sans-serif;
+      background: white;
+      color: black;
+    }
+
+    @font-face {
+      font-family: "CircularStd";
+      src: url("/fonts/CircularStd-Light.woff2") format("woff2");
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    footer {
+      animation: scroll-footer linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 1000px;
+    }
+
+    @keyframes scroll-footer {
+      50% {
+        height: 100px;
+      }
+      75% {
+        height: 75px;
+      }
+      100% {
+        height: 65px;
+      }
+    }
+  </style>
+</html>

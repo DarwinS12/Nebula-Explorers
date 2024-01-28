@@ -1,0 +1,30 @@
+---
+import { getMissions } from "../services/missions";
+
+const missions = await getMissions();
+
+---
+
+<main class="p-12 grid grid-cols-1 lg:grid-cols-3">
+  {
+    missions.map((mission) => (
+      <>
+        <article class="shadow-md rounded-md backdrop-blur-sm bg-black/10 m-4 flex flex-col justify-center items-center pt-4 ">
+          <img
+            class="w-22 mb-2 rounded-md"
+            src={mission.links.patch.small}
+            alt="news img"
+          />
+          <h1 class="text-2xl mt-4">Flight #{mission.flight_number}</h1>
+          <p class="text-xl mt-4">{mission.name}</p>  
+          <a
+            href={`/rockets/${mission.id}`}
+            class=" m-3 cursor-pointer rounded-md hover:before:bg-yellow-500 relative overflow-hidden border border-yellow-500 bg-white px-3 text-yellow-500 shadow-2xl transition-all before:absolute before:bottom-0 before:left-0 before:top-0 before:z-0 before:h-full before:w-0 before:bg-yellow-500 before:transition-all before:duration-500 hover:text-white hover:shadow-yellow-500 hover:before:left-0 hover:before:w-full"
+          >
+            <span class="relative z-10">See more</span>
+          </a>
+        </article>
+      </>
+    ))
+  }
+</main>

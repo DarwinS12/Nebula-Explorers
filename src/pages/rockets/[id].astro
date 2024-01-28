@@ -1,0 +1,67 @@
+---
+import { getMissionById, getMissions } from "../../services/missions";
+import Layout from "../../layouts/Layout.astro";
+
+export const prerender = false;
+
+const { id } = Astro.params;
+
+let rocket;
+if (id) {
+  rocket = await getMissionById({ id });
+}
+
+const isSuccess = rocket.success ? "Success" : "Failure";
+---
+
+<Layout title={`Rocket ${rocket.name}`}>
+  <article
+    class="relative mt-12 mx-4 lg:mx-64 shadow-md rounded-md backdrop-blur-sm bg-black/10 m-4 flex flex-col justify-center items-center pt-4"
+  >
+    <a
+      aria-label="to home"
+      href="/"
+      class="absolute text-black cursor-pointer top-8 left-8 rounded-full bg-black/60 hover:bg-black/70 hover:text-white/80 p-2"
+    >
+      <svg
+        fill="currentcolor"
+        width="24px"
+        data-encore-id="icon"
+        role="img"
+        aria-hidden="true"
+        class="Svg-sc-ytk21e-0 cAMMLk IYDlXmBmmUKHveMzIPCF"
+        viewBox="0 0 16 16"
+        ><path
+          d="M11.03.47a.75.75 0 0 1 0 1.06L4.56 8l6.47 6.47a.75.75 0 1 1-1.06 1.06L2.44 8 9.97.47a.75.75 0 0 1 1.06 0z"
+        ></path></svg
+      >
+    </a>
+    <section class="flex flex-col items-center justify-center">
+      <img src={rocket?.links?.patch.small} alt={rocket.name} />
+      <h1 class="text-4xl mt-6">
+        Flight # <span class="text-yellow-500">{rocket.flight_number}</span>
+      </h1>
+      <h3 class="text-xl mt-4">{rocket.name}</h3>
+    </section>
+    <section class="mx-10 lg:mx-80 mt-8">
+      <span
+        class:list={[
+          "rounded-sm p-1",
+          {
+            "bg-green-400 text-green-950": rocket.success,
+            "bg-red-400 text-red-950": !rocket.success,
+          },
+        ]}>{isSuccess}</span
+      >
+      <p class="my-6">{rocket.details}</p>
+    </section>
+    <a
+      target="_blank"
+      referrerpolicy="no-referrer"
+      href={rocket.links?.webcast}
+      class="m-3 cursor-pointer rounded-md hover:before:bg-yellow-500 relative overflow-hidden border border-yellow-500 bg-white px-3 text-yellow-600 shadow-2xl transition-all before:absolute before:bottom-0 before:left-0 before:top-0 before:z-0 before:h-full before:w-0 before:bg-yellow-500 before:transition-all before:duration-500 hover:text-white hover:shadow-yellow-500 hover:before:left-0 hover:before:w-full"
+    >
+      <span class="relative z-10">See Launch</span>
+    </a>
+  </article>
+</Layout>
